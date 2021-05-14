@@ -13,7 +13,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-cluster-x-k8s-io-v1alpha3-cluster
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
