@@ -32,7 +32,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-cluster-x-k8s-io-v1alpha3-machine
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
@@ -52,7 +51,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-cluster-x-k8s-io-v1alpha3-machinedeployment
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
@@ -72,7 +70,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-cluster-x-k8s-io-v1alpha3-machinehealthcheck
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
@@ -92,7 +89,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-cluster-x-k8s-io-v1alpha3-machineset
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
@@ -112,7 +108,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-exp-cluster-x-k8s-io-v1alpha3-machinepool
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
@@ -132,7 +127,6 @@ webhooks:
         name: capi-webhook-service
         namespace: capi-webhook-system
         path: /mutate-addons-cluster-x-k8s-io-v1alpha3-clusterresourceset
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
