@@ -1,0 +1,150 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: capi-validating-webhook-configuration
+  labels:
+    cluster.x-k8s.io/provider: cluster-api
+  annotations:
+    cert-manager.io/inject-ca-from: capi-webhook-system/capi-serving-cert
+  creationTimestamp: "null"
+webhooks:
+  - name: validation.cluster.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-cluster-x-k8s-io-v1alpha3-cluster
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - clusters
+        apiGroups:
+          - cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.machine.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-cluster-x-k8s-io-v1alpha3-machine
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - machines
+        apiGroups:
+          - cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.machinedeployment.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-cluster-x-k8s-io-v1alpha3-machinedeployment
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - machinedeployments
+        apiGroups:
+          - cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.machinehealthcheck.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-cluster-x-k8s-io-v1alpha3-machinehealthcheck
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - machinehealthchecks
+        apiGroups:
+          - cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.machineset.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-cluster-x-k8s-io-v1alpha3-machineset
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - machinesets
+        apiGroups:
+          - cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.exp.machinepool.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-exp-cluster-x-k8s-io-v1alpha3-machinepool
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - machinepools
+        apiGroups:
+          - exp.cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
+  - name: validation.clusterresourceset.addons.cluster.x-k8s.io
+    clientConfig:
+      service:
+        name: capi-webhook-service
+        namespace: capi-webhook-system
+        path: /validate-addons-cluster-x-k8s-io-v1alpha3-clusterresourceset
+      caBundle: Cg==
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    rules:
+      - resources:
+          - clusterresourcesets
+        apiGroups:
+          - addons.cluster.x-k8s.io
+        apiVersions:
+          - v1alpha3
+        operations:
+          - CREATE
+          - UPDATE
+    sideEffects: None
