@@ -7,7 +7,6 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: capi-webhook-system/capi-serving-cert
     controller-gen.kubebuilder.io/version: v0.2.9
-  creationTimestamp: "null"
 spec:
   conversion:
     strategy: Webhook

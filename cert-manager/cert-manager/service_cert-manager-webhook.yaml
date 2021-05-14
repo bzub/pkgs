@@ -16,5 +16,6 @@ spec:
     app.kubernetes.io/name: webhook
   ports:
     - name: https
+      protocol: TCP
       port: 443
       targetPort: 10250
