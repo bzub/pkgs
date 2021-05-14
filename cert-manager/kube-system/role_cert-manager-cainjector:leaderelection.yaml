@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cert-manager-cainjector:leaderelection
+  namespace: kube-system
+  labels:
+    app: cainjector
+    app.kubernetes.io/component: cainjector
+    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/name: cainjector
+rules:
+  - resources:
+      - configmaps
+    apiGroups:
+      - ""
+    resourceNames:
+      - cert-manager-cainjector-leader-election
+      - cert-manager-cainjector-leader-election-core
+    verbs:
+      - get
+      - update
+      - patch
+  - resources:
+      - configmaps
+    apiGroups:
+      - ""
+    verbs:
+      - create
