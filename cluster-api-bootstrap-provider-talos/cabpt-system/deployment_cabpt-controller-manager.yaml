@@ -26,7 +26,10 @@ spec:
             - /manager
           args:
             - --enable-leader-election
-            - --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false}
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+          env:
+            - name: EXP_MACHINE_POOL
+              value: "false"
           resources:
             limits:
               cpu: 500m
