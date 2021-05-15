@@ -17,7 +17,6 @@ spec:
           name: cabpt-webhook-service
           namespace: capi-webhook-system
           path: /convert
-        caBundle: Cg==
       conversionReviewVersions:
         - v1
         - v1beta1

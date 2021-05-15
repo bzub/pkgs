@@ -4,7 +4,6 @@ metadata:
   name: cabpt-manager-role
   labels:
     cluster.x-k8s.io/provider: bootstrap-talos
-  creationTimestamp: "null"
 rules:
   - resources:
       - secrets
