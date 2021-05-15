@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cabpt-talosconfig-editor-role
+  labels:
+    cluster.x-k8s.io/provider: bootstrap-talos
+rules:
+  - resources:
+      - talosconfigs
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - talosconfigs/status
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+    verbs:
+      - get
+      - patch
+      - update

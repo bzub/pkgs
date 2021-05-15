@@ -1,0 +1,9 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: cabpt-selfsigned-issuer
+  namespace: capi-webhook-system
+  labels:
+    cluster.x-k8s.io/provider: bootstrap-talos
+spec:
+  selfSigned: {}

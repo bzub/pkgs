@@ -1,0 +1,60 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cabpt-manager-role
+  labels:
+    cluster.x-k8s.io/provider: bootstrap-talos
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - secrets
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - talosconfigs
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - talosconfigs/status
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+    verbs:
+      - get
+      - patch
+      - update
+  - resources:
+      - clusters
+      - clusters/status
+      - machines
+      - machines/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - machinepools
+      - machinepools/status
+    apiGroups:
+      - exp.cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch

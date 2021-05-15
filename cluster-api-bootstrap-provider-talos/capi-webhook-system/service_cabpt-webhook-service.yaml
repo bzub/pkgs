@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cabpt-webhook-service
+  namespace: capi-webhook-system
+  labels:
+    cluster.x-k8s.io/provider: bootstrap-talos
+spec:
+  selector:
+    cluster.x-k8s.io/provider: bootstrap-talos
+    control-plane: controller-manager
+  ports:
+    - port: 443
+      targetPort: 9443
