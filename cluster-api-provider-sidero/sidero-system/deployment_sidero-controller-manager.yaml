@@ -25,7 +25,8 @@ spec:
         control-plane: metal-controller-manager
     spec:
       terminationGracePeriodSeconds: 10
-      hostNetwork: ${SIDERO_CONTROLLER_MANAGER_HOST_NETWORK:=false}
+      # TODO: Make this a substitution value.
+      hostNetwork: false # SIDERO_CONTROLLER_MANAGER_HOST_NETWORK:=false
       containers:
         - name: kube-rbac-proxy
           image: gcr.io/kubebuilder/kube-rbac-proxy:v0.4.1
@@ -43,14 +44,14 @@ spec:
             - /manager
           args:
             - --metrics-addr=127.0.0.1:8080
-            - --api-endpoint=${SIDERO_CONTROLLER_MANAGER_API_ENDPOINT:=-}
-            - --extra-agent-kernel-args=${SIDERO_CONTROLLER_MANAGER_EXTRA_AGENT_KERNEL_ARGS:=-}
-            - --auto-accept-servers=${SIDERO_CONTROLLER_MANAGER_AUTO_ACCEPT_SERVERS:=false}
-            - --insecure-wipe=${SIDERO_CONTROLLER_MANAGER_INSECURE_WIPE:=true}
-            - --auto-bmc-setup=${SIDERO_CONTROLLER_MANAGER_AUTO_BMC_SETUP:=true}
-            - --server-reboot-timeout=${SIDERO_CONTROLLER_MANAGER_SERVER_REBOOT_TIMEOUT:=20m}
-            - --test-power-simulated-explicit-failure-prob=${SIDERO_CONTROLLER_MANAGER_TEST_POWER_EXPLICIT_FAILURE:=0}
-            - --test-power-simulated-silent-failure-prob=${SIDERO_CONTROLLER_MANAGER_TEST_POWER_SILENT_FAILURE:=0}
+            - --api-endpoint=$(SIDERO_CONTROLLER_MANAGER_API_ENDPOINT)
+            - --extra-agent-kernel-args=$(SIDERO_CONTROLLER_MANAGER_EXTRA_AGENT_KERNEL_ARGS)
+            - --auto-accept-servers=$(SIDERO_CONTROLLER_MANAGER_AUTO_ACCEPT_SERVERS)
+            - --insecure-wipe=$(SIDERO_CONTROLLER_MANAGER_INSECURE_WIPE)
+            - --auto-bmc-setup=$(SIDERO_CONTROLLER_MANAGER_AUTO_BMC_SETUP)
+            - --server-reboot-timeout=$(SIDERO_CONTROLLER_MANAGER_SERVER_REBOOT_TIMEOUT)
+            - --test-power-simulated-explicit-failure-prob=$(SIDERO_CONTROLLER_MANAGER_TEST_POWER_EXPLICIT_FAILURE)
+            - --test-power-simulated-silent-failure-prob=$(SIDERO_CONTROLLER_MANAGER_TEST_POWER_SILENT_FAILURE)
           ports:
             - name: tftp
               protocol: UDP
@@ -66,6 +67,22 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: SIDERO_CONTROLLER_MANAGER_API_ENDPOINT
+              value: ""
+            - name: SIDERO_CONTROLLER_MANAGER_EXTRA_AGENT_KERNEL_ARGS
+              value: ""
+            - name: SIDERO_CONTROLLER_MANAGER_AUTO_ACCEPT_SERVERS
+              value: "false"
+            - name: SIDERO_CONTROLLER_MANAGER_INSECURE_WIPE
+              value: "true"
+            - name: SIDERO_CONTROLLER_MANAGER_AUTO_BMC_SETUP
+              value: "true"
+            - name: SIDERO_CONTROLLER_MANAGER_SERVER_REBOOT_TIMEOUT
+              value: "20m"
+            - name: SIDERO_CONTROLLER_MANAGER_TEST_POWER_EXPLICIT_FAILURE
+              value: "0"
+            - name: SIDERO_CONTROLLER_MANAGER_TEST_POWER_SILENT_FAILURE
+              value: "0"
           resources:
             limits:
               cpu: 1000m
