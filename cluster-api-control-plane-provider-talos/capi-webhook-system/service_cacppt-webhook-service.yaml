@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cacppt-webhook-service
+  namespace: capi-webhook-system
+  labels:
+    cluster.x-k8s.io/provider: controlplane-talos
+spec:
+  selector:
+    cluster.x-k8s.io/provider: controlplane-talos
+    control-plane: controller-manager
+  ports:
+    - port: 443
+      targetPort: 9443

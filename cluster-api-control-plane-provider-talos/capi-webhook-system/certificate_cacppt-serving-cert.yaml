@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cacppt-serving-cert
+  namespace: capi-webhook-system
+  labels:
+    cluster.x-k8s.io/provider: controlplane-talos
+spec:
+  dnsNames:
+    - cacppt-webhook-service.capi-webhook-system.svc
+    - cacppt-webhook-service.capi-webhook-system.svc.cluster.local
+  issuerRef:
+    name: cacppt-selfsigned-issuer
+    kind: Issuer
+  secretName: cacppt-webhook-service-cert

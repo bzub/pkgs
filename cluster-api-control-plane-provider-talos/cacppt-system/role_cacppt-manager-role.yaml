@@ -1,0 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cacppt-manager-role
+  namespace: cacppt-system
+  labels:
+    cluster.x-k8s.io/provider: controlplane-talos
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - configmaps
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+  - resources:
+      - rolebindings
+    apiGroups:
+      - rbac
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+  - resources:
+      - roles
+    apiGroups:
+      - rbac
+    verbs:
+      - create
+      - get
+      - list
+      - watch

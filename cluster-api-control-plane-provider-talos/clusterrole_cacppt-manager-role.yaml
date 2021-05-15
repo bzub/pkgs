@@ -1,0 +1,64 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cacppt-manager-role
+  labels:
+    cluster.x-k8s.io/provider: controlplane-talos
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - '*'
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+      - controlplane.cluster.x-k8s.io
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - clusters
+      - clusters/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - machines
+      - machines/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - events
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - get
+      - list
+      - patch
+      - watch
+  - resources:
+      - secrets
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - get
+      - list
+      - patch
+      - watch
