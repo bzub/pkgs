@@ -9,7 +9,6 @@ metadata:
     clusterctl.cluster.x-k8s.io/move: ""
   annotations:
     controller-gen.kubebuilder.io/version: v0.5.0
-  creationTimestamp: "null"
 spec:
   group: metal.sidero.dev
   names:
