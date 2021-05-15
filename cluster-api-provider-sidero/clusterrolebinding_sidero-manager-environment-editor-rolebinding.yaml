@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sidero-manager-environment-editor-rolebinding
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+roleRef:
+  name: sidero-environment-editor-role
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - name: default
+    namespace: sidero-system
+    kind: ServiceAccount

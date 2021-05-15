@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sidero-metadata-server-role
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - machines
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+  - resources:
+      - metalmachines
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - list
+  - resources:
+      - servers
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+  - resources:
+      - secrets
+    apiGroups:
+      - ""
+    verbs:
+      - get

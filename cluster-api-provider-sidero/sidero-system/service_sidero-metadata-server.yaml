@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sidero-metadata-server
+  namespace: sidero-system
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+spec:
+  selector:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+    control-plane: metal-metadata-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: http

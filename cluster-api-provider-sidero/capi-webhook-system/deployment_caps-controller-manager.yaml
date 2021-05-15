@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caps-controller-manager
+  namespace: capi-webhook-system
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+    control-plane: caps-controller-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidero
+      cluster.x-k8s.io/provider: sidero
+      cluster.x-k8s.io/v1alpha3: v1alpha3
+      control-plane: caps-controller-manager
+  template:
+    metadata:
+      labels:
+        app: sidero
+        cluster.x-k8s.io/provider: sidero
+        cluster.x-k8s.io/v1alpha3: v1alpha3
+        control-plane: caps-controller-manager
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: manager
+          image: ghcr.io/talos-systems/cluster-api-provider-sidero:v0.3.0-alpha.0
+          command:
+            - /manager
+          args:
+            - --metrics-addr=127.0.0.1:8080
+            - --webhook-port=9443
+          ports:
+            - name: webhook-server
+              protocol: TCP
+              containerPort: 9443
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - name: cert
+              readOnly: true
+              mountPath: /tmp/k8s-webhook-server/serving-certs
+          imagePullPolicy: Always
+      volumes:
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: caps-webhook-service-cert

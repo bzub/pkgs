@@ -1,0 +1,143 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: caps-manager-role
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - events
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - patch
+  - resources:
+      - secrets
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - clusters
+      - clusters/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - machines
+      - machines/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - metalclusters
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - metalclusters/status
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - get
+      - patch
+      - update
+  - resources:
+      - metalmachines
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - metalmachines/status
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - serverbindings
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - serverbindings/status
+    apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    verbs:
+      - get
+      - patch
+      - update
+  - resources:
+      - serverclasses
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - serverclasses/status
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - servers
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - servers/status
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - watch

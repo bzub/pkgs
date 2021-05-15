@@ -1,0 +1,156 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: metalclusters.infrastructure.cluster.x-k8s.io
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  annotations:
+    cert-manager.io/inject-ca-from: capi-webhook-system/caps-serving-cert
+    controller-gen.kubebuilder.io/version: v0.5.0
+spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: caps-webhook-service
+          namespace: capi-webhook-system
+          path: /convert
+        caBundle: Cg==
+      conversionReviewVersions:
+        - v1
+        - v1beta1
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    kind: MetalCluster
+    categories:
+      - cluster-api
+    listKind: MetalClusterList
+    plural: metalclusters
+    singular: metalcluster
+  scope: Namespaced
+  versions:
+    - name: v1alpha2
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: MetalCluster is the Schema for the metalclusters API.
+          properties:
+            apiVersion:
+              type: string
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            kind:
+              type: string
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: MetalClusterSpec defines the desired state of MetalCluster.
+              properties:
+                apiEndpoints:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      port:
+                        type: integer
+                        description: The port on which the API server is serving.
+                      host:
+                        type: string
+                        description: The hostname on which the API server is serving.
+                    required:
+                      - host
+                      - port
+            status:
+              type: object
+              description: MetalClusterStatus defines the observed state of MetalCluster.
+              properties:
+                apiEndpoints:
+                  type: array
+                  description: APIEndpoints represents the endpoints to communicate with the control plane.
+                  items:
+                    type: object
+                    properties:
+                      port:
+                        type: integer
+                        description: The port on which the API server is serving.
+                      host:
+                        type: string
+                        description: The hostname on which the API server is serving.
+                    required:
+                      - host
+                      - port
+                ready:
+                  type: boolean
+              required:
+                - ready
+      served: true
+      storage: false
+      subresources:
+        status: {}
+    - name: v1alpha3
+      additionalPrinterColumns:
+        - name: Cluster
+          type: string
+          description: Cluster to which this MetalCluster belongs
+          jsonPath: .metadata.labels.cluster\.x-k8s\.io/cluster-name
+        - name: Ready
+          type: boolean
+          jsonPath: .status.ready
+        - name: Endpoint
+          type: string
+          priority: 1
+          description: Control Plane Endpoint
+          jsonPath: .spec.controlPlaneEndpoint.host
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: MetalCluster is the Schema for the metalclusters API.
+          properties:
+            apiVersion:
+              type: string
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            kind:
+              type: string
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: MetalClusterSpec defines the desired state of MetalCluster.
+              properties:
+                controlPlaneEndpoint:
+                  type: object
+                  description: ControlPlaneEndpoint represents the endpoint used to communicate with the control plane.
+                  properties:
+                    port:
+                      type: integer
+                      description: The port on which the API server is serving.
+                      format: int32
+                    host:
+                      type: string
+                      description: The hostname on which the API server is serving.
+                  required:
+                    - host
+                    - port
+            status:
+              type: object
+              description: MetalClusterStatus defines the observed state of MetalCluster.
+              properties:
+                ready:
+                  type: boolean
+              required:
+                - ready
+      served: true
+      storage: true
+      subresources:
+        status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

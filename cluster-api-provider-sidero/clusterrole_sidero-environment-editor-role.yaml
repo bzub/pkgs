@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sidero-environment-editor-role
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+rules:
+  - resources:
+      - environments
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - environments/status
+    apiGroups:
+      - metal.sidero.dev
+    verbs:
+      - get
+      - patch
+      - update

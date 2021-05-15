@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidero-controller-manager
+  namespace: sidero-system
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+    control-plane: metal-controller-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidero
+      cluster.x-k8s.io/provider: sidero
+      cluster.x-k8s.io/v1alpha3: v1alpha3
+      control-plane: metal-controller-manager
+  template:
+    metadata:
+      labels:
+        app: sidero
+        cluster.x-k8s.io/provider: sidero
+        cluster.x-k8s.io/v1alpha3: v1alpha3
+        control-plane: metal-controller-manager
+    spec:
+      terminationGracePeriodSeconds: 10
+      hostNetwork: ${SIDERO_CONTROLLER_MANAGER_HOST_NETWORK:=false}
+      containers:
+        - name: kube-rbac-proxy
+          image: gcr.io/kubebuilder/kube-rbac-proxy:v0.4.1
+          args:
+            - --secure-listen-address=0.0.0.0:8443
+            - --upstream=http://127.0.0.1:8080/
+            - --logtostderr=true
+            - --v=10
+          ports:
+            - name: https
+              containerPort: 8443
+        - name: manager
+          image: ghcr.io/talos-systems/metal-controller-manager:v0.3.0-alpha.0
+          command:
+            - /manager
+          args:
+            - --metrics-addr=127.0.0.1:8080
+            - --api-endpoint=${SIDERO_CONTROLLER_MANAGER_API_ENDPOINT:=-}
+            - --extra-agent-kernel-args=${SIDERO_CONTROLLER_MANAGER_EXTRA_AGENT_KERNEL_ARGS:=-}
+            - --auto-accept-servers=${SIDERO_CONTROLLER_MANAGER_AUTO_ACCEPT_SERVERS:=false}
+            - --insecure-wipe=${SIDERO_CONTROLLER_MANAGER_INSECURE_WIPE:=true}
+            - --auto-bmc-setup=${SIDERO_CONTROLLER_MANAGER_AUTO_BMC_SETUP:=true}
+            - --server-reboot-timeout=${SIDERO_CONTROLLER_MANAGER_SERVER_REBOOT_TIMEOUT:=20m}
+            - --test-power-simulated-explicit-failure-prob=${SIDERO_CONTROLLER_MANAGER_TEST_POWER_EXPLICIT_FAILURE:=0}
+            - --test-power-simulated-silent-failure-prob=${SIDERO_CONTROLLER_MANAGER_TEST_POWER_SILENT_FAILURE:=0}
+          ports:
+            - name: tftp
+              protocol: UDP
+              containerPort: 69
+            - name: http
+              protocol: TCP
+              containerPort: 8081
+            - name: grpc
+              protocol: TCP
+              containerPort: 50100
+          env:
+            - name: API_ENDPOINT
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          imagePullPolicy: Always

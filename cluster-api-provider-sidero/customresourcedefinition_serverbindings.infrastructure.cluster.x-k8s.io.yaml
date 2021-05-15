@@ -1,0 +1,144 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: serverbindings.infrastructure.cluster.x-k8s.io
+  labels:
+    app: sidero
+    cluster.x-k8s.io/provider: sidero
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  annotations:
+    cert-manager.io/inject-ca-from: capi-webhook-system/caps-serving-cert
+    controller-gen.kubebuilder.io/version: v0.5.0
+spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: caps-webhook-service
+          namespace: capi-webhook-system
+          path: /convert
+        caBundle: Cg==
+      conversionReviewVersions:
+        - v1
+        - v1beta1
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    kind: ServerBinding
+    listKind: ServerBindingList
+    plural: serverbindings
+    singular: serverbinding
+  scope: Cluster
+  versions:
+    - name: v1alpha3
+      additionalPrinterColumns:
+        - name: Ready
+          type: string
+          description: ServerBinding ready status
+          jsonPath: .status.ready
+        - name: Server
+          type: string
+          priority: 1
+          description: Server ID
+          jsonPath: .metadata.name
+        - name: ServerClass
+          type: string
+          priority: 1
+          description: Server Class
+          jsonPath: .spec.serverClassRef.name
+        - name: MetalMachine
+          type: string
+          priority: 1
+          description: Metal Machine
+          jsonPath: .spec.metalMachineRef.name
+        - name: Cluster
+          type: string
+          priority: 1
+          description: Cluster to which this ServerBinding belongs
+          jsonPath: .metadata.labels.cluster\.x-k8s\.io/cluster-name
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: "ServerBinding defines the binding between the MetalMachine and the Server. \n ServerBinding always has matching ID with the Server object. ServerBinding optionally binds to the ServerClass which Server was picked from."
+          properties:
+            apiVersion:
+              type: string
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            kind:
+              type: string
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: ServerBindingSpec defines the spec of the ServerBinding object.
+              properties:
+                metalMachineRef:
+                  type: object
+                  description: 'ObjectReference contains enough information to let you inspect or modify the referred object. --- New uses of this type are discouraged because of difficulty describing its usage when embedded in APIs.  1. Ignored fields.  It includes many fields which are not generally honored.  For instance, ResourceVersion and FieldPath are both very rarely valid in actual usage.  2. Invalid usage help.  It is impossible to add specific help for individual usage.  In most embedded usages, there are particular     restrictions like, "must refer only to types A and B" or "UID not honored" or "name must be restricted".     Those cannot be well described when embedded.  3. Inconsistent validation.  Because the usages are different, the validation rules are different by usage, which makes it hard for users to predict what will happen.  4. The fields are both imprecise and overly precise.  Kind is not a precise mapping to a URL. This can produce ambiguity     during interpretation and require a REST mapping.  In most cases, the dependency is on the group,resource tuple     and the version of the actual struct is irrelevant.  5. We cannot easily change it.  Because this type is embedded in many locations, updates to this type     will affect numerous schemas.  Don''t make new APIs embed an underspecified API type they do not control. Instead of using this type, create a locally provided and used type that is well-focused on your reference. For example, ServiceReferences for admission registration: https://github.com/kubernetes/api/blob/release-1.17/admissionregistration/v1/types.go#L533 .'
+                  properties:
+                    name:
+                      type: string
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    namespace:
+                      type: string
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    apiVersion:
+                      type: string
+                      description: API version of the referent.
+                    kind:
+                      type: string
+                      description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                    fieldPath:
+                      type: string
+                      description: 'If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2]. For example, if the object reference is to a container within a pod, this would take on a value like: "spec.containers{name}" (where "name" refers to the name of the container that triggered the event) or if no container name is specified "spec.containers[2]" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object. TODO: this design is not final and this field is subject to change in the future.'
+                    resourceVersion:
+                      type: string
+                      description: 'Specific resourceVersion to which this reference is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency'
+                    uid:
+                      type: string
+                      description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
+                serverClassRef:
+                  type: object
+                  description: 'ObjectReference contains enough information to let you inspect or modify the referred object. --- New uses of this type are discouraged because of difficulty describing its usage when embedded in APIs.  1. Ignored fields.  It includes many fields which are not generally honored.  For instance, ResourceVersion and FieldPath are both very rarely valid in actual usage.  2. Invalid usage help.  It is impossible to add specific help for individual usage.  In most embedded usages, there are particular     restrictions like, "must refer only to types A and B" or "UID not honored" or "name must be restricted".     Those cannot be well described when embedded.  3. Inconsistent validation.  Because the usages are different, the validation rules are different by usage, which makes it hard for users to predict what will happen.  4. The fields are both imprecise and overly precise.  Kind is not a precise mapping to a URL. This can produce ambiguity     during interpretation and require a REST mapping.  In most cases, the dependency is on the group,resource tuple     and the version of the actual struct is irrelevant.  5. We cannot easily change it.  Because this type is embedded in many locations, updates to this type     will affect numerous schemas.  Don''t make new APIs embed an underspecified API type they do not control. Instead of using this type, create a locally provided and used type that is well-focused on your reference. For example, ServiceReferences for admission registration: https://github.com/kubernetes/api/blob/release-1.17/admissionregistration/v1/types.go#L533 .'
+                  properties:
+                    name:
+                      type: string
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    namespace:
+                      type: string
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    apiVersion:
+                      type: string
+                      description: API version of the referent.
+                    kind:
+                      type: string
+                      description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                    fieldPath:
+                      type: string
+                      description: 'If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2]. For example, if the object reference is to a container within a pod, this would take on a value like: "spec.containers{name}" (where "name" refers to the name of the container that triggered the event) or if no container name is specified "spec.containers[2]" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object. TODO: this design is not final and this field is subject to change in the future.'
+                    resourceVersion:
+                      type: string
+                      description: 'Specific resourceVersion to which this reference is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency'
+                    uid:
+                      type: string
+                      description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
+              required:
+                - metalMachineRef
+            status:
+              type: object
+              description: ServerBindingState defines the observed state of ServerBinding.
+              properties:
+                ready:
+                  type: boolean
+                  description: Ready is true when matching server is found.
+      served: true
+      storage: true
+      subresources:
+        status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
