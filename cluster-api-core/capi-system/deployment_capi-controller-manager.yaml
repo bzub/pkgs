@@ -38,15 +38,15 @@ spec:
             - --metrics-addr=127.0.0.1:8080
             - --enable-leader-election
             - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
+          ports:
+            - name: healthz
+              protocol: TCP
+              containerPort: 9440
           env:
             - name: EXP_MACHINE_POOL
               value: "false"
             - name: EXP_CLUSTER_RESOURCE_SET
               value: "false"
-          ports:
-            - name: healthz
-              protocol: TCP
-              containerPort: 9440
           livenessProbe:
             httpGet:
               port: healthz
