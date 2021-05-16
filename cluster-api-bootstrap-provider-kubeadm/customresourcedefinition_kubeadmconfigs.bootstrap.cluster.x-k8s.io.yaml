@@ -9,7 +9,6 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: capi-webhook-system/capi-kubeadm-bootstrap-serving-cert
     controller-gen.kubebuilder.io/version: v0.2.9
-  creationTimestamp: "null"
 spec:
   conversion:
     strategy: Webhook
@@ -19,7 +18,6 @@ spec:
           name: capi-kubeadm-bootstrap-webhook-service
           namespace: capi-webhook-system
           path: /convert
-        caBundle: Cg==
       conversionReviewVersions:
         - v1
         - v1beta1

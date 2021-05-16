@@ -4,7 +4,6 @@ metadata:
   name: capi-kubeadm-bootstrap-manager-role
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
-  creationTimestamp: "null"
 rules:
   - resources:
       - configmaps
