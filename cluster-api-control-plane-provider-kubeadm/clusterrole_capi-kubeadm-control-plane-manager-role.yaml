@@ -4,8 +4,8 @@ metadata:
   name: capi-kubeadm-control-plane-manager-role
   labels:
     cluster.x-k8s.io/provider: control-plane-kubeadm
-    kubeadm.controlplane.cluster.x-k8s.io/aggregate-to-manager: "true"
     clusterctl.cluster.x-k8s.io: ""
+    kubeadm.controlplane.cluster.x-k8s.io/aggregate-to-manager: "true"
 rules:
   - resources:
       - '*'

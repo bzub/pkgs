@@ -5,8 +5,8 @@ metadata:
   namespace: capd-system
   labels:
     cluster.x-k8s.io/provider: infrastructure-docker
-    control-plane: controller-manager
     clusterctl.cluster.x-k8s.io: ""
+    control-plane: controller-manager
 spec:
   replicas: 1
   selector:
