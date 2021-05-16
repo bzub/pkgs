@@ -1,0 +1,55 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: capi-kubeadm-bootstrap-manager-role
+  labels:
+    cluster.x-k8s.io/provider: bootstrap-kubeadm
+  creationTimestamp: "null"
+rules:
+  - resources:
+      - configmaps
+      - events
+      - secrets
+    apiGroups:
+      - ""
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - kubeadmconfigs
+      - kubeadmconfigs/status
+    apiGroups:
+      - bootstrap.cluster.x-k8s.io
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - resources:
+      - clusters
+      - clusters/status
+      - machines
+      - machines/status
+    apiGroups:
+      - cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
+  - resources:
+      - machinepools
+      - machinepools/status
+    apiGroups:
+      - exp.cluster.x-k8s.io
+    verbs:
+      - get
+      - list
+      - watch
