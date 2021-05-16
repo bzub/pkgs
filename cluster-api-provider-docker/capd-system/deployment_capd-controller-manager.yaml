@@ -33,7 +33,7 @@ spec:
         - name: manager
           image: gcr.io/k8s-staging-cluster-api/capd-manager:v0.3.16
           args:
-            - --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false}
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
             - --metrics-addr=0
             - -v=4
           ports:
@@ -43,6 +43,9 @@ spec:
             - name: healthz
               protocol: TCP
               containerPort: 9440
+          env:
+            - name: EXP_MACHINE_POOL
+              value: "false"
           volumeMounts:
             - name: cert
               readOnly: true
