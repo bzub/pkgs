@@ -4,6 +4,7 @@ metadata:
   name: cacppt-metrics-reader
   labels:
     cluster.x-k8s.io/provider: controlplane-talos
+    clusterctl.cluster.x-k8s.io: ""
 rules:
   - nonResourceURLs:
       - /metrics

@@ -5,6 +5,8 @@ metadata:
   labels:
     cluster.x-k8s.io/provider: infrastructure-docker
     cluster.x-k8s.io/v1alpha3: v1alpha3
+    clusterctl.cluster.x-k8s.io: ""
+    clusterctl.cluster.x-k8s.io/lifecycle: shared
   annotations:
     controller-gen.kubebuilder.io/version: v0.2.9
 spec:

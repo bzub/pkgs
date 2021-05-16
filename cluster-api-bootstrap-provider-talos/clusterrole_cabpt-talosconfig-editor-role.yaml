@@ -4,6 +4,7 @@ metadata:
   name: cabpt-talosconfig-editor-role
   labels:
     cluster.x-k8s.io/provider: bootstrap-talos
+    clusterctl.cluster.x-k8s.io: ""
 rules:
   - resources:
       - talosconfigs

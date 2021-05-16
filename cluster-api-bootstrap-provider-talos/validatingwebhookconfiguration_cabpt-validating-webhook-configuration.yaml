@@ -4,6 +4,8 @@ metadata:
   name: cabpt-validating-webhook-configuration
   labels:
     cluster.x-k8s.io/provider: bootstrap-talos
+    clusterctl.cluster.x-k8s.io: ""
+    clusterctl.cluster.x-k8s.io/lifecycle: shared
 webhooks:
   - name: validation.talosconfig.bootstrap.cluster.x-k8s.io
     clientConfig:

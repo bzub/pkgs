@@ -5,6 +5,7 @@ metadata:
   namespace: capd-system
   labels:
     cluster.x-k8s.io/provider: infrastructure-docker
+    clusterctl.cluster.x-k8s.io: ""
 roleRef:
   name: capd-leader-election-role
   kind: Role

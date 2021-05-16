@@ -5,5 +5,7 @@ metadata:
   namespace: capi-webhook-system
   labels:
     cluster.x-k8s.io/provider: bootstrap-talos
+    clusterctl.cluster.x-k8s.io: ""
+    clusterctl.cluster.x-k8s.io/lifecycle: shared
 spec:
   selfSigned: {}

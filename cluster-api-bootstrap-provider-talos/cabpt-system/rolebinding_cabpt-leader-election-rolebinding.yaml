@@ -5,6 +5,7 @@ metadata:
   namespace: cabpt-system
   labels:
     cluster.x-k8s.io/provider: bootstrap-talos
+    clusterctl.cluster.x-k8s.io: ""
 roleRef:
   name: cabpt-leader-election-role
   kind: Role

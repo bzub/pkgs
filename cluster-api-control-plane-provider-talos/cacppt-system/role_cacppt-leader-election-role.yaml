@@ -5,6 +5,7 @@ metadata:
   namespace: cacppt-system
   labels:
     cluster.x-k8s.io/provider: controlplane-talos
+    clusterctl.cluster.x-k8s.io: ""
 rules:
   - resources:
       - configmaps

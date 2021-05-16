@@ -4,6 +4,8 @@ metadata:
   name: capd-validating-webhook-configuration
   labels:
     cluster.x-k8s.io/provider: infrastructure-docker
+    clusterctl.cluster.x-k8s.io: ""
+    clusterctl.cluster.x-k8s.io/lifecycle: shared
   annotations:
     cert-manager.io/inject-ca-from: capd-system/capd-serving-cert
 webhooks:
