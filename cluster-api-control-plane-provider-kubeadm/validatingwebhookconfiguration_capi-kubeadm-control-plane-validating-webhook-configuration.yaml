@@ -6,7 +6,6 @@ metadata:
     cluster.x-k8s.io/provider: control-plane-kubeadm
   annotations:
     cert-manager.io/inject-ca-from: capi-webhook-system/capi-kubeadm-control-plane-serving-cert
-  creationTimestamp: "null"
 webhooks:
   - name: validation.kubeadmcontrolplane.controlplane.cluster.x-k8s.io
     clientConfig:
@@ -14,7 +13,6 @@ webhooks:
         name: capi-kubeadm-control-plane-webhook-service
         namespace: capi-webhook-system
         path: /validate-controlplane-cluster-x-k8s-io-v1alpha3-kubeadmcontrolplane
-      caBundle: Cg==
     failurePolicy: Fail
     matchPolicy: Equivalent
     rules:
