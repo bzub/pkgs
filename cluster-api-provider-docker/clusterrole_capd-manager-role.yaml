@@ -4,7 +4,6 @@ metadata:
   name: capd-manager-role
   labels:
     cluster.x-k8s.io/provider: infrastructure-docker
-  creationTimestamp: "null"
 rules:
   - resources:
       - secrets

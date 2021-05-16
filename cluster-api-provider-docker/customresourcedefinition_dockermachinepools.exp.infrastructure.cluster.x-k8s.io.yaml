@@ -7,7 +7,6 @@ metadata:
     cluster.x-k8s.io/v1alpha3: v1alpha3
   annotations:
     controller-gen.kubebuilder.io/version: v0.2.9
-  creationTimestamp: "null"
 spec:
   group: exp.infrastructure.cluster.x-k8s.io
   names:
