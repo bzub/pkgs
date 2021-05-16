@@ -1,0 +1,166 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: dockermachinepools.exp.infrastructure.cluster.x-k8s.io
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-docker
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.9
+  creationTimestamp: "null"
+spec:
+  group: exp.infrastructure.cluster.x-k8s.io
+  names:
+    kind: DockerMachinePool
+    categories:
+      - cluster-api
+    listKind: DockerMachinePoolList
+    plural: dockermachinepools
+    singular: dockermachinepool
+  scope: Namespaced
+  versions:
+    - name: v1alpha3
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: DockerMachinePool is the Schema for the dockermachinepools API
+          properties:
+            apiVersion:
+              type: string
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            kind:
+              type: string
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: DockerMachinePoolSpec defines the desired state of DockerMachinePool
+              properties:
+                template:
+                  type: object
+                  description: Template contains the details used to build a replica machine within the Machine Pool
+                  properties:
+                    customImage:
+                      type: string
+                      description: CustomImage allows customizing the container image that is used for running the machine
+                    extraMounts:
+                      type: array
+                      description: ExtraMounts describes additional mount points for the node container These may be used to bind a hostPath
+                      items:
+                        type: object
+                        description: Mount specifies a host volume to mount into a container. This is a simplified version of kind v1alpha4.Mount types
+                        properties:
+                          readOnly:
+                            type: boolean
+                            description: If set, the mount is read-only.
+                          containerPath:
+                            type: string
+                            description: Path of the mount within the container.
+                          hostPath:
+                            type: string
+                            description: Path of the mount on the host. If the hostPath doesn't exist, then runtimes should report error. If the hostpath is a symbolic link, runtimes should follow the symlink and mount the real destination to container.
+                    preLoadImages:
+                      type: array
+                      description: PreLoadImages allows to pre-load images in a newly created machine. This can be used to speed up tests by avoiding e.g. to download CNI images on all the containers.
+                      items:
+                        type: string
+                providerID:
+                  type: string
+                  description: ProviderID is the identification ID of the Machine Pool
+                providerIDList:
+                  type: array
+                  description: ProviderIDList is the list of identification IDs of machine instances managed by this Machine Pool
+                  items:
+                    type: string
+            status:
+              type: object
+              description: DockerMachinePoolStatus defines the observed state of DockerMachinePool
+              properties:
+                replicas:
+                  type: integer
+                  description: Replicas is the most recently observed number of replicas.
+                  format: int32
+                conditions:
+                  type: array
+                  description: Conditions defines current service state of the DockerMachinePool.
+                  items:
+                    type: object
+                    description: Condition defines an observation of a Cluster API resource operational state.
+                    properties:
+                      type:
+                        type: string
+                        description: Type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.
+                      status:
+                        type: string
+                        description: Status of the condition, one of True, False, Unknown.
+                      lastTransitionTime:
+                        type: string
+                        description: Last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.
+                        format: date-time
+                      message:
+                        type: string
+                        description: A human readable message indicating details about the transition. This field may be empty.
+                      reason:
+                        type: string
+                        description: The reason for the condition's last transition in CamelCase. The specific API may choose whether or not this field is considered a guaranteed API. This field may not be empty.
+                      severity:
+                        type: string
+                        description: Severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.
+                    required:
+                      - status
+                      - type
+                instances:
+                  type: array
+                  description: Instances contains the status for each instance in the pool
+                  items:
+                    type: object
+                    properties:
+                      addresses:
+                        type: array
+                        description: Addresses contains the associated addresses for the docker machine.
+                        items:
+                          type: object
+                          description: MachineAddress contains information for the node's address.
+                          properties:
+                            type:
+                              type: string
+                              description: Machine address type, one of Hostname, ExternalIP or InternalIP.
+                            address:
+                              type: string
+                              description: The machine address.
+                          required:
+                            - address
+                            - type
+                      bootstrapped:
+                        type: boolean
+                        description: Bootstrapped is true when the kubeadm bootstrapping has been run against this machine
+                      instanceName:
+                        type: string
+                        description: InstanceName is the identification of the Machine Instance within the Machine Pool
+                      providerID:
+                        type: string
+                        description: ProviderID is the provider identification of the Machine Pool Instance
+                      ready:
+                        type: boolean
+                        description: Ready denotes that the machine (docker container) is ready
+                      version:
+                        type: string
+                        description: Version defines the Kubernetes version for the Machine Instance
+                observedGeneration:
+                  type: integer
+                  description: The generation observed by the deployment controller.
+                  format: int64
+                ready:
+                  type: boolean
+                  description: Ready denotes that the machine pool is ready
+      served: true
+      storage: true
+      subresources:
+        status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

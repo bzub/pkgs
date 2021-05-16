@@ -1,0 +1,89 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: dockermachinetemplates.infrastructure.cluster.x-k8s.io
+  labels:
+    cluster.x-k8s.io/provider: infrastructure-docker
+    cluster.x-k8s.io/v1alpha3: v1alpha3
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.9
+  creationTimestamp: "null"
+spec:
+  group: infrastructure.cluster.x-k8s.io
+  names:
+    kind: DockerMachineTemplate
+    categories:
+      - cluster-api
+    listKind: DockerMachineTemplateList
+    plural: dockermachinetemplates
+    singular: dockermachinetemplate
+  scope: Namespaced
+  versions:
+    - name: v1alpha3
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: DockerMachineTemplate is the Schema for the dockermachinetemplates API
+          properties:
+            apiVersion:
+              type: string
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            kind:
+              type: string
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: DockerMachineTemplateSpec defines the desired state of DockerMachineTemplate
+              properties:
+                template:
+                  type: object
+                  description: DockerMachineTemplateResource describes the data needed to create a DockerMachine from a template
+                  properties:
+                    spec:
+                      type: object
+                      description: Spec is the specification of the desired behavior of the machine.
+                      properties:
+                        bootstrapped:
+                          type: boolean
+                          description: Bootstrapped is true when the kubeadm bootstrapping has been run against this machine
+                        customImage:
+                          type: string
+                          description: CustomImage allows customizing the container image that is used for running the machine
+                        extraMounts:
+                          type: array
+                          description: ExtraMounts describes additional mount points for the node container These may be used to bind a hostPath
+                          items:
+                            type: object
+                            description: Mount specifies a host volume to mount into a container. This is a simplified version of kind v1alpha4.Mount types
+                            properties:
+                              readOnly:
+                                type: boolean
+                                description: If set, the mount is read-only.
+                              containerPath:
+                                type: string
+                                description: Path of the mount within the container.
+                              hostPath:
+                                type: string
+                                description: Path of the mount on the host. If the hostPath doesn't exist, then runtimes should report error. If the hostpath is a symbolic link, runtimes should follow the symlink and mount the real destination to container.
+                        preLoadImages:
+                          type: array
+                          description: PreLoadImages allows to pre-load images in a newly created machine. This can be used to speed up tests by avoiding e.g. to download CNI images on all the containers.
+                          items:
+                            type: string
+                        providerID:
+                          type: string
+                          description: ProviderID will be the container name in ProviderID format (docker:////<containername>)
+                  required:
+                    - spec
+              required:
+                - template
+      served: true
+      storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
