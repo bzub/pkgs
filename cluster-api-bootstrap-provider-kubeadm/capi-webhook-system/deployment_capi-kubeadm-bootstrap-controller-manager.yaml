@@ -37,11 +37,14 @@ spec:
           args:
             - --metrics-addr=127.0.0.1:8080
             - --webhook-port=9443
-            - --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false}
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
           ports:
             - name: webhook-server
               protocol: TCP
               containerPort: 9443
+          env:
+            - name: EXP_MACHINE_POOL
+              value: "false"
           volumeMounts:
             - name: cert
               readOnly: true
