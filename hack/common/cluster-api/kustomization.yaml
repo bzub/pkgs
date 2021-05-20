@@ -1,0 +1,59 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+labels:
+  - pairs:
+      clusterctl.cluster.x-k8s.io: ""
+
+patches:
+  # TODO: Use annotationSelector when kustomize issue is closed.
+  # https://github.com/kubernetes-sigs/kustomize/issues/3887
+  # annotationSelector: "cert-manager.io/inject-ca-from=capi-webhook-system/capi-serving-cert"
+  - target:
+      kind: CustomResourceDefinition
+      name: clusters\..*|machine\..*|machinehealthchecks\..*|machines\..*|machinesets\..*
+    patch: |-
+      - op: remove
+        path: /spec/conversion/webhook/clientConfig/caBundle
+
+  - target:
+      kind: CustomResourceDefinition|.*WebhookConfiguration|Certificate|Issuer
+    patch: |-
+      - op: add
+        path: /metadata/labels/clusterctl.cluster.x-k8s.io~1lifecycle
+        value: shared
+
+  - target:
+      namespace: capi-webhook-system
+    patch: |-
+      - op: add
+        path: /metadata/labels/clusterctl.cluster.x-k8s.io~1lifecycle
+        value: shared
+
+  - target:
+      kind: .*WebhookConfiguration
+    patch: |-
+      - op: remove
+        path: /webhooks/0/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/1/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/2/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/3/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/4/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/5/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/6/clientConfig/caBundle
+
+  - target: {}
+    patch: |-
+      apiVersion: any
+      kind: any
+      metadata:
+        name: any
+        creationTimestamp: null
+      status:
+        $patch: delete

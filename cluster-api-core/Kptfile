@@ -6,6 +6,16 @@ info:
   description: sample description
 pipeline:
   mutators:
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].env[0].value
+        by-value: "false"
+        put-comment: 'kpt-set: ${EXP_MACHINE_POOL}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].env[1].value
+        by-value: "false"
+        put-comment: 'kpt-set: ${EXP_CLUSTER_RESOURCE_SET}'
     - image: gcr.io/kpt-fn/apply-setters:unstable
       configMap:
         EXP_CLUSTER_RESOURCE_SET: "false"

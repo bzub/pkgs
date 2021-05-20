@@ -1,0 +1,76 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # - github.com/kubernetes-sigs/cluster-api/config/?ref=v0.3.16
+  - https://github.com/kubernetes-sigs/cluster-api/releases/download/v0.3.16/core-components.yaml
+
+components:
+  - ../common/cluster-api
+
+images:
+  - name: gcr.io/k8s-staging-cluster-api/cluster-api-controller
+    newName: us.gcr.io/k8s-artifacts-prod/cluster-api/cluster-api-controller
+    newTag: v0.3.16
+
+patches:
+  - target:
+      kind: Deployment
+      # name: capi-controller-manager
+      # namespace: capi-system|capi-webhook-system
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/1/args/2
+        value: --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
+      - op: remove
+        path: /spec/template/spec/containers/1/imagePullPolicy
+        value: IfNotPresent
+      - op: add
+        path: /spec/template/spec/containers/1/env
+        value:
+          - name: EXP_MACHINE_POOL
+            value: "false"
+          - name: EXP_CLUSTER_RESOURCE_SET
+            value: "false"
+
+  - target:
+      kind: ClusterRole
+      name: capi-aggregated-manager-role
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: capi-system-capi-aggregated-manager-role
+      - op: remove
+        path: /rules
+
+  - target:
+      kind: ClusterRole
+      name: capi-manager-role
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: capi-system-capi-manager-role
+
+  - target:
+      kind: ClusterRole
+      name: capi-proxy-role
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: capi-system-capi-proxy-role
+
+  - target:
+      kind: ClusterRoleBinding
+      name: capi-manager-rolebinding
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: capi-system-capi-manager-rolebinding
+
+  - target:
+      kind: ClusterRoleBinding
+      name: capi-proxy-rolebinding
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: capi-system-capi-proxy-rolebinding
