@@ -2,7 +2,5 @@ apiVersion: kpt.dev/v1alpha2
 kind: Kptfile
 metadata:
   name: cluster-api-core
-  labels:
-    app.kubernetes.io/version: v0.3.16
 info:
-  description: Core resources for a cluster-api management cluster.
+  description: sample description

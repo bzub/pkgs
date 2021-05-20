@@ -1,4 +1,4 @@
-apiVersion: admissionregistration.k8s.io/v1
+apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: capi-validating-webhook-configuration
@@ -10,8 +10,6 @@ metadata:
     cert-manager.io/inject-ca-from: capi-webhook-system/capi-serving-cert
 webhooks:
   - name: validation.cluster.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -31,8 +29,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.machine.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -52,8 +48,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.machinedeployment.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -73,8 +67,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.machinehealthcheck.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -94,8 +86,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.machineset.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -115,8 +105,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.exp.machinepool.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
@@ -136,8 +124,6 @@ webhooks:
           - UPDATE
     sideEffects: None
   - name: validation.clusterresourceset.addons.cluster.x-k8s.io
-    admissionReviewVersions:
-      - v1beta1
     clientConfig:
       service:
         name: capi-webhook-service
