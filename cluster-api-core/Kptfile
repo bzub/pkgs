@@ -4,3 +4,9 @@ metadata:
   name: cluster-api-core
 info:
   description: sample description
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/apply-setters:unstable
+      configMap:
+        EXP_CLUSTER_RESOURCE_SET: "false"
+        EXP_MACHINE_POOL: "false"
