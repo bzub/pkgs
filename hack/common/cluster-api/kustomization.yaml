@@ -11,7 +11,7 @@ patches:
   # annotationSelector: "cert-manager.io/inject-ca-from=capi-webhook-system/capi-serving-cert"
   - target:
       kind: CustomResourceDefinition
-      name: clusters\..*|machine\..*|machinehealthchecks\..*|machines\..*|machinesets\..*
+      name: clusters\..*|machine\..*|machinehealthchecks\..*|machines\..*|machinesets\..*|kubeadm.*
     patch: |-
       - op: remove
         path: /spec/conversion/webhook/clientConfig/caBundle
@@ -37,18 +37,6 @@ patches:
     patch: |-
       - op: remove
         path: /webhooks/0/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/1/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/2/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/3/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/4/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/5/clientConfig/caBundle
-      - op: remove
-        path: /webhooks/6/clientConfig/caBundle
 
   - target: {}
     patch: |-

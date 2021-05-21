@@ -8,44 +8,65 @@ components:
   - ../common/cluster-api
 
 patches:
+  # Remove when cluster-api components use kubebuilder v3.
+  # https://github.com/kubernetes-sigs/kubebuilder/pull/1699
   - target:
-      kind: ClusterRole
-      name: capi-aggregated-manager-role
+      kind: .*WebhookConfiguration
     patch: |-
-      - op: replace
-        path: /metadata/name
-        value: capi-system-capi-aggregated-manager-role
+      # This is handled in the "common" component.
+      # - op: remove
+      #   path: /webhooks/0/clientConfig/caBundle
       - op: remove
-        path: /rules
-
-  - target:
-      kind: ClusterRole
-      name: capi-manager-role
-    patch: |-
-      - op: replace
-        path: /metadata/name
-        value: capi-system-capi-manager-role
-
-  - target:
-      kind: ClusterRole
-      name: capi-proxy-role
-    patch: |-
-      - op: replace
-        path: /metadata/name
-        value: capi-system-capi-proxy-role
-
-  - target:
-      kind: ClusterRoleBinding
-      name: capi-manager-rolebinding
-    patch: |-
-      - op: replace
-        path: /metadata/name
-        value: capi-system-capi-manager-rolebinding
-
-  - target:
-      kind: ClusterRoleBinding
-      name: capi-proxy-rolebinding
-    patch: |-
-      - op: replace
-        path: /metadata/name
-        value: capi-system-capi-proxy-rolebinding
+        path: /webhooks/1/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/2/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/3/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/4/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/5/clientConfig/caBundle
+      - op: remove
+        path: /webhooks/6/clientConfig/caBundle
+  #
+  # - target:
+  #     kind: ClusterRole
+  #     name: capi-aggregated-manager-role
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: capi-system-capi-aggregated-manager-role
+  #     - op: remove
+  #       path: /rules
+  #
+  # - target:
+  #     kind: ClusterRole
+  #     name: capi-manager-role
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: capi-system-capi-manager-role
+  #
+  # - target:
+  #     kind: ClusterRole
+  #     name: capi-proxy-role
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: capi-system-capi-proxy-role
+  #
+  # - target:
+  #     kind: ClusterRoleBinding
+  #     name: capi-manager-rolebinding
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: capi-system-capi-manager-rolebinding
+  #
+  # - target:
+  #     kind: ClusterRoleBinding
+  #     name: capi-proxy-rolebinding
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: capi-system-capi-proxy-rolebinding
