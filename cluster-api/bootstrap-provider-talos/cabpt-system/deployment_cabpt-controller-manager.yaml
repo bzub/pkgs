@@ -27,10 +27,10 @@ spec:
             - /manager
           args:
             - --enable-leader-election
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
           env:
             - name: EXP_MACHINE_POOL
-              value: "false"
+              value: "false" # kpt-set: ${EXP_MACHINE_POOL}
           resources:
             limits:
               cpu: 500m

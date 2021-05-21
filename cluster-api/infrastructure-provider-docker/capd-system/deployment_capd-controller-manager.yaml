@@ -34,7 +34,7 @@ spec:
         - name: manager
           image: gcr.io/k8s-staging-cluster-api/capd-manager:v0.3.16
           args:
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
             - --metrics-addr=0
             - -v=4
           ports:
@@ -46,7 +46,7 @@ spec:
               containerPort: 9440
           env:
             - name: EXP_MACHINE_POOL
-              value: "false"
+              value: "false" # kpt-set: ${EXP_MACHINE_POOL}
           volumeMounts:
             - name: cert
               readOnly: true
