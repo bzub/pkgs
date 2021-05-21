@@ -17,7 +17,8 @@ for dir in ${pkgs}; do
 
 	resources="$("${dir}/generate.sh")"
 	if [ -n "${resources}" ]; then
-		echo "${resources}" | kpt fn sink "${repo_dir}/${pkg}"
-		kpt fn render "${repo_dir}/${pkg}"
+		echo "${resources}" | kpt fn sink "${repo_dir}/cluster-api/${pkg}"
 	fi
 done
+
+kpt fn render "${repo_dir}/cluster-api"

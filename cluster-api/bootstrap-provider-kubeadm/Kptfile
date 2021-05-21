@@ -1,0 +1,6 @@
+apiVersion: kpt.dev/v1alpha2
+kind: Kptfile
+metadata:
+  name: cluster-api-bootstrap-provider-kubeadm
+info:
+  description: sample description

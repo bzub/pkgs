@@ -1,7 +1,7 @@
 apiVersion: kpt.dev/v1alpha2
 kind: Kptfile
 metadata:
-  name: cluster-api-core
+  name: cluster-api
 info:
   description: sample description
 pipeline:
@@ -9,7 +9,7 @@ pipeline:
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:
         by-path: spec.template.spec.containers[*].args[*]
-        by-value: --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false},ClusterResourceSet=${EXP_CLUSTER_RESOURCE_SET:=false}
+        by-value-regex: --feature-gates=.*
         put-value: --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:
@@ -23,11 +23,19 @@ pipeline:
         put-comment: 'kpt-set: ${EXP_CLUSTER_RESOURCE_SET}'
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:
+        by-path: '**.name'
+        by-value-regex: capi-((?:aggregated-)?(?:manager|proxy)+-(?:role(?:binding)?)+)
+        put-value: capi-system-${1}
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
         by-value-regex: (.*)capi-system(.*)
         put-comment: 'kpt-set: ${1}${NAMESPACE}${2}'
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:
         by-path: '**.name'
-        by-value-regex: ((?:aggregated-)?(?:manager|proxy)+-(?:role(?:binding)?)+)
-        put-comment: 'kpt-set: ${NAMESPACE}-${1}'
-        put-value: capi-system-${1}
+        by-value-regex: capi-kubeadm-bootstrap-((?:aggregated-)?(?:manager|proxy)+-(?:role(?:binding)?)+)
+        put-value: capi-kubeadm-bootstrap-system-${1}
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-value-regex: (.*)capi-kubeadm-bootstrap-system(.*)
+        put-comment: 'kpt-set: ${1}${NAMESPACE}${2}'
