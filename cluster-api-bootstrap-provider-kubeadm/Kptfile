@@ -4,3 +4,30 @@ metadata:
   name: cluster-api-bootstrap-provider-kubeadm
 info:
   description: sample description
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].args[*]
+        by-value: --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false}
+        put-value: --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].env[0].value
+        by-value: "false"
+        put-comment: 'kpt-set: ${EXP_MACHINE_POOL}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].env[1].value
+        by-value: "false"
+        put-comment: 'kpt-set: ${EXP_CLUSTER_RESOURCE_SET}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-value-regex: (.*)capi-kubeadm-bootstrap-system(.*)
+        put-comment: 'kpt-set: ${1}${NAMESPACE}${2}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: '**.name'
+        by-value-regex: ((?:aggregated-)?(?:manager|proxy)+-(?:role(?:binding)?)+)
+        put-comment: 'kpt-set: ${NAMESPACE}-${1}'
+        put-value: capi-kubeadm-bootstrap-system-${1}

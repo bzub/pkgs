@@ -21,3 +21,13 @@ pipeline:
         by-path: spec.template.spec.containers[*].env[1].value
         by-value: "false"
         put-comment: 'kpt-set: ${EXP_CLUSTER_RESOURCE_SET}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-value-regex: (.*)capi-system(.*)
+        put-comment: 'kpt-set: ${1}${NAMESPACE}${2}'
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: '**.name'
+        by-value-regex: ((?:aggregated-)?(?:manager|proxy)+-(?:role(?:binding)?)+)
+        put-comment: 'kpt-set: ${NAMESPACE}-${1}'
+        put-value: capi-system-${1}
