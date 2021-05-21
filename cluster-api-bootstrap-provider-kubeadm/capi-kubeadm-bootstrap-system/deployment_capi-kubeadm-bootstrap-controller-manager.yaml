@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: capi-kubeadm-bootstrap-controller-manager
-  namespace: capi-kubeadm-bootstrap-system
+  namespace: capi-kubeadm-bootstrap-system # kpt-set: ${NAMESPACE}
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
     clusterctl.cluster.x-k8s.io: ""
@@ -38,10 +38,12 @@ spec:
           args:
             - --metrics-addr=127.0.0.1:8080
             - --enable-leader-election
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
           env:
             - name: EXP_MACHINE_POOL
-              value: "false"
+              value: "false" # kpt-set: ${EXP_MACHINE_POOL}
+            - name: EXP_CLUSTER_RESOURCE_SET
+              value: "false" # kpt-set: ${EXP_CLUSTER_RESOURCE_SET}
           imagePullPolicy: IfNotPresent
       tolerations:
         - effect: NoSchedule

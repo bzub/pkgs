@@ -39,14 +39,16 @@ spec:
           args:
             - --metrics-addr=127.0.0.1:8080
             - --webhook-port=9443
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
           ports:
             - name: webhook-server
               protocol: TCP
               containerPort: 9443
           env:
             - name: EXP_MACHINE_POOL
-              value: "false"
+              value: "false" # kpt-set: ${EXP_MACHINE_POOL}
+            - name: EXP_CLUSTER_RESOURCE_SET
+              value: "false" # kpt-set: ${EXP_CLUSTER_RESOURCE_SET}
           volumeMounts:
             - name: cert
               readOnly: true

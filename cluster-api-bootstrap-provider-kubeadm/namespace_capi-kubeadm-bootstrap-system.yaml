@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: capi-kubeadm-bootstrap-system
+  name: capi-kubeadm-bootstrap-system # kpt-set: ${NAMESPACE}
   labels:
     cluster.x-k8s.io/provider: bootstrap-kubeadm
     clusterctl.cluster.x-k8s.io: ""
