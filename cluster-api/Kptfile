@@ -9,7 +9,12 @@ pipeline:
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:
         by-path: spec.template.spec.containers[*].args[*]
-        by-value-regex: --feature-gates=.*
+        by-value: --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false}
+        put-value: --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+    - image: gcr.io/kpt-fn/search-replace:unstable
+      configMap:
+        by-path: spec.template.spec.containers[*].args[*]
+        by-value: --feature-gates=MachinePool=${EXP_MACHINE_POOL:=false},ClusterResourceSet=${EXP_CLUSTER_RESOURCE_SET:=false}
         put-value: --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
     - image: gcr.io/kpt-fn/search-replace:unstable
       configMap:

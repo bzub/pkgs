@@ -38,7 +38,7 @@ spec:
           args:
             - --metrics-addr=127.0.0.1:8080
             - --enable-leader-election
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
           env:
             - name: EXP_MACHINE_POOL
               value: "false" # kpt-set: ${EXP_MACHINE_POOL}
