@@ -39,7 +39,7 @@ spec:
           args:
             - --metrics-addr=127.0.0.1:8080
             - --webhook-port=9443
-            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL)
+            - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
           ports:
             - name: webhook-server
               protocol: TCP
