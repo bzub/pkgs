@@ -7,11 +7,6 @@ resources:
 components:
   - ../common/cluster-api
 
-images:
-  - name: gcr.io/k8s-staging-cluster-api/cluster-api-controller
-    newName: us.gcr.io/k8s-artifacts-prod/cluster-api/cluster-api-controller
-    newTag: v0.3.16
-
 patches:
   - target:
       kind: ClusterRole
