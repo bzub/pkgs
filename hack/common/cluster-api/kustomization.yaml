@@ -30,6 +30,8 @@ patches:
         path: /metadata/labels/clusterctl.cluster.x-k8s.io~1lifecycle
         value: shared
 
+  # Remove when cluster-api components use kubebuilder v3.
+  # https://github.com/kubernetes-sigs/kubebuilder/pull/1699
   - target:
       kind: .*WebhookConfiguration
     patch: |-
@@ -57,3 +59,22 @@ patches:
         creationTimestamp: null
       status:
         $patch: delete
+
+  - target:
+      kind: Deployment
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: any
+      spec:
+        template:
+          spec:
+            containers:
+              - name: manager
+                env:
+                  - name: EXP_MACHINE_POOL
+                    value: "false"
+                  - name: EXP_CLUSTER_RESOURCE_SET
+                    value: "false"
+

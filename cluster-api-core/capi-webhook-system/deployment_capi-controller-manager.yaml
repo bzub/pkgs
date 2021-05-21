@@ -64,6 +64,7 @@ spec:
             httpGet:
               port: healthz
               path: /readyz
+          imagePullPolicy: IfNotPresent
       volumes:
         - name: cert
           secret:
