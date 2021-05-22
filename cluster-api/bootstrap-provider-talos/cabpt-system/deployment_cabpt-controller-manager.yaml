@@ -30,7 +30,7 @@ spec:
             - --feature-gates=MachinePool=$(EXP_MACHINE_POOL),ClusterResourceSet=$(EXP_CLUSTER_RESOURCE_SET)
           env:
             - name: EXP_MACHINE_POOL
-              value: "false" # kpt-set: ${EXP_MACHINE_POOL}
+              value: "true" # kpt-set: ${EXP_MACHINE_POOL}
           resources:
             limits:
               cpu: 500m
