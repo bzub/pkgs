@@ -5,4 +5,4 @@ resources:
   - https://github.com/kubernetes-sigs/cluster-api/releases/download/v0.3.16/bootstrap-components.yaml
 
 components:
-  - ../common/cluster-api
+  - ../../common/cluster-api

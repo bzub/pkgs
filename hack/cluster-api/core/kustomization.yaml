@@ -5,7 +5,7 @@ resources:
   - https://github.com/kubernetes-sigs/cluster-api/releases/download/v0.3.16/core-components.yaml
 
 components:
-  - ../common/cluster-api
+  - ../../common/cluster-api
 
 patches:
   # Remove when cluster-api components use kubebuilder v3.
