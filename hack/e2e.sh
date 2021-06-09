@@ -3,11 +3,11 @@ set -ef -o pipefail
 
 hack_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
 repo_dir="$(dirname "${hack_dir}")"
-work_dir="$(mktemp -d)"
+management_cluster="bzub-pkgs-e2e-management-$(git -C "${repo_dir}" rev-parse --short HEAD)"
+work_dir="$(mktemp -d -t "${management_cluster}")"
 capi_repo_dir="${work_dir}/cluster-api"
 e2e_config="${capi_repo_dir}/test/e2e/config/e2e-config.yaml"
 capi_ver="v0.3.16"
-management_cluster="bzub-pkgs-e2e-management"
 management_cluster_config="${work_dir}/kind-cluster-config.yaml"
 
 echo "${work_dir}"
@@ -39,10 +39,7 @@ EOF
 kpt fn render "${deploy_dir}"
 kpt live init "${deploy_dir}" --inventory-id="${management_cluster}"
 
-if [ "${SKIP_RESOURCE_CLEANUP}" != "true" ]; then
-	kind delete cluster --name "${management_cluster}"
-
-	cat <<EOF > "${management_cluster_config}"
+cat <<EOF > "${management_cluster_config}"
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: ${management_cluster}
@@ -53,9 +50,8 @@ nodes:
         containerPath: /var/run/docker.sock
 EOF
 
-	KIND_EXPERIMENTAL_DOCKER_NETWORK=bridge \
-		kind create cluster --config "${management_cluster_config}"
-fi
+KIND_EXPERIMENTAL_DOCKER_NETWORK=bridge \
+	kind create cluster --config "${management_cluster_config}"
 
 images="$(\
 	kpt fn source "${deploy_dir}" |\
@@ -69,8 +65,6 @@ for image in ${images}; do
 	docker pull "${image}"
 	kind load docker-image --name "${management_cluster}" ${image}
 done
-
-# kind load docker-image --name "${management_cluster}" ${images}
 
 retry_count="0"
 while ! kpt live apply --install-resource-group "${deploy_dir}"; do
@@ -94,4 +88,10 @@ sed \
 	> "${e2e_config}"
 
 make -C "${capi_repo_dir}" docker-build-e2e
-make -C "${capi_repo_dir}" test-e2e USE_EXISTING_CLUSTER=true E2E_CONF_FILE="${e2e_config}"
+make -C "${capi_repo_dir}" test-e2e \
+	USE_EXISTING_CLUSTER=true \
+	E2E_CONF_FILE="${e2e_config}"
+
+if [ "${SKIP_RESOURCE_CLEANUP}" != "true" ]; then
+	kind delete cluster --name "${management_cluster}"
+fi
